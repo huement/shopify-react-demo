@@ -1,0 +1,570 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #6366f1; /* bright indigo */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  /* Icon colors (theme-aware) */
+  --color-icon: var(--foreground);
+  --color-icon-muted: #737373;
+  --color-icon-accent: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  /* Icon animations */
+  --animate-icon-wiggle: icon-wiggle 0.35s ease-in-out;
+  --animate-icon-scale-up: icon-scale-up 0.2s ease-out forwards;
+  --animate-icon-pop: icon-pop 0.45s ease-out forwards;
+  @keyframes icon-wiggle {
+    0%,
+    50%,
+    100% {
+      transform: rotate(0deg);
+    }
+    15% {
+      transform: rotate(-5deg);
+    }
+    30% {
+      transform: rotate(5deg);
+    }
+  }
+  @keyframes icon-scale-up {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+  @keyframes icon-pop {
+    0% {
+      transform: rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    15% {
+      transform: rotate(-5deg) scale(1);
+      opacity: 1;
+    }
+    30% {
+      transform: rotate(5deg) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(0deg) scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.25);
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --primary: #818cf8; /* slightly lighter indigo for dark mode */
+    --color-icon-muted: #a3a3a3;
+  }
+}
+
+/* Material Symbols base – no color so Tailwind text-* classes apply */
+.material-icons,
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined", "Material Icons", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1em;
+  font-display: block; /* Forces the browser to wait for the icon */
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  font-feature-settings: "liga";
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variation-settings: "opsz" 24, "wght" 400, "FILL" 0, "GRAD" 0;
+}
+
+/* Icon hover/active: wiggle + scale when parent or self is hovered/active */
+.group:hover .icon-interactive,
+.group:active .icon-interactive,
+.icon-interactive:hover,
+.icon-interactive:active {
+  animation: icon-wiggle 0.35s ease-in-out, icon-scale-up 0.2s ease-out forwards;
+}
+
+/* Pop on click: applied via JS when button is clicked */
+.icon-pop-running {
+  animation: icon-pop 0.45s ease-out forwards;
+}
+
+html {
+  /* Enable smooth scrolling for anchor links; respects prefers-reduced-motion */
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* Footer: lines start at 0 width and draw out when we reach the bottom */
+.footer-line {
+  transform: scaleX(0);
+  transition: transform 0.6s ease-out;
+}
+.footer-line-left {
+  transform-origin: right;
+}
+.footer-line-right {
+  transform-origin: left;
+}
+.footer-lines-drawn .footer-line {
+  transform: scaleX(1);
+}
+
+/* Footer icon + circle: scale up together when lines draw */
+.footer-icon-wrap {
+  transform: scale(1);
+  transition: transform 0.6s ease-out;
+}
+.footer-lines-drawn .footer-icon-wrap {
+  transform: scale(1.25);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), var(--font-body), system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.font-heading {
+  font-family: var(--font-heading), var(--font-body), system-ui, sans-serif;
+}
+
+.font-medium-heading {
+  font-family: var(--font-heading), var(--font-body), system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* Featured hero slider – pagination bullets (custom classes replace Swiper defaults) */
+
+.featured-hero .swiper-pagination {
+  bottom: 2rem !important;
+
+  display: flex !important;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.featured-hero .featured-bullet {
+  display: inline-block !important;
+
+  width: 12px !important;
+
+  height: 12px !important;
+
+  min-width: 12px !important;
+
+  min-height: 12px !important;
+
+  border-radius: 50% !important;
+
+  background: transparent !important;
+
+  border: 2px solid #fff !important;
+
+  opacity: 1 !important;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.featured-hero .featured-bullet:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+}
+
+.featured-hero .featured-bullet-active {
+  background: #fff !important;
+
+  border-color: #fff !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #fff;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .featured-hero .swiper-pagination {
+    bottom: 3rem !important; /* Move up slightly to avoid OS gesture bars */
+    gap: 20px; /* Much wider spacing to prevent accidental double-taps */
+  }
+
+  .featured-hero .featured-bullet {
+    width: 16px !important; /* Slightly larger visual size on mobile */
+    height: 16px !important;
+    padding: 12px !important; /* Total hit area now ~44px (16 + 12 + 12 + borders) */
+  }
+
+  /* Hide side arrows on mobile if you want to rely on swiping, 
+     or make them larger if keeping them */
+  .swiper-button-prev,
+  .swiper-button-next {
+    scale: 1.2;
+    margin: 0 10px;
+  }
+}
+
+/* Add to bag button: muted green → bright hover pulse → success ring */
+@keyframes btn-add-bag-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+  }
+  70% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 12px rgba(52, 211, 153, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+  }
+}
+@keyframes btn-add-bag-success-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(52, 211, 153, 0);
+  }
+}
+.btn-add-bag {
+  background: rgb(16 185 129); /* emerald-600, muted bright green */
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.25s ease, color 0.2s ease,
+    font-weight 0.2s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.btn-add-bag:hover:not(:disabled) {
+  background: rgb(52 211 153); /* emerald-400, brighter */
+  font-weight: 600;
+  animation: btn-add-bag-pulse 1.8s ease-in-out infinite;
+}
+.btn-add-bag:disabled {
+  background: rgb(148 163 172);
+  color: rgb(241 245 249);
+  cursor: not-allowed;
+}
+.dark .btn-add-bag {
+  background: rgb(16 185 129);
+  color: white;
+}
+.dark .btn-add-bag:hover:not(:disabled) {
+  background: rgb(52 211 153);
+}
+.dark .btn-add-bag:disabled {
+  background: rgb(71 85 105);
+  color: rgb(203 213 225);
+}
+.btn-add-bag-success {
+  animation: btn-add-bag-success-ring 0.55s ease-out forwards;
+}
+
+/* Add to bag success overlay: trophy + confetti (disabled when prefers-reduced-motion) */
+@keyframes add-to-bag-trophy {
+  0% {
+    transform: translateY(500px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes add-to-bag-fly-up {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-20vw);
+  }
+  100% {
+    transform: translateY(-15vw);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-down {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(20vw);
+  }
+  100% {
+    transform: translateY(15vw);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-left {
+  0% {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-35vw);
+  }
+  100% {
+    transform: translateX(-180px);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-right {
+  0% {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(35vw);
+  }
+  100% {
+    transform: translateX(180px);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-up-left {
+  0% {
+    transform: rotate(135deg) translate(0, 0);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(135deg) translate(-3vw, 20vw);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-up-right {
+  0% {
+    transform: rotate(45deg);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(45deg) translate(-3vw, -20vw);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-down-left {
+  0% {
+    transform: rotate(45deg) translate(0, 0);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(45deg) translate(-3vw, 20vw);
+    opacity: 0;
+  }
+}
+@keyframes add-to-bag-fly-down-right {
+  0% {
+    transform: rotate(135deg) translate(0, 0);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(135deg) translate(0, -20vw);
+    opacity: 0;
+  }
+}
+
+.add-to-bag-success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-to-bag-success-overlay .add-to-bag-success-action {
+  position: relative;
+  max-height: 300px;
+  height: 25vw;
+  max-width: 300px;
+  width: 25vw;
+}
+.add-to-bag-success-overlay .add-to-bag-success-trophy {
+  z-index: 1;
+  background-color: #fff;
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .add-to-bag-success-overlay .add-to-bag-success-trophy {
+    animation: add-to-bag-trophy 0.5s 1 forwards;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti {
+    z-index: -1;
+    position: absolute;
+    height: 50px;
+    width: 10px;
+    border-radius: 10px;
+    animation-fill-mode: forwards;
+    animation-duration: 0.75s;
+    animation-iteration-count: 1;
+    transform-origin: center middle;
+    opacity: 0;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti-one {
+    top: 0;
+    left: calc(50% - 5px);
+    background-color: #ffea00;
+    animation-name: add-to-bag-fly-up;
+    animation-delay: 0.35s;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti-two {
+    top: auto;
+    bottom: 0;
+    left: calc(50% - 5px);
+    background-color: #ffea00;
+    animation-name: add-to-bag-fly-down;
+    animation-delay: 0.35s;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti-three,
+  .add-to-bag-success-overlay .add-to-bag-success-confetti-four {
+    top: calc(50% - 5px);
+    left: calc(50% - 25px);
+    height: 10px;
+    width: 50px;
+    background-color: #ffea00;
+    animation-delay: 0.35s;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti-three {
+    animation-name: add-to-bag-fly-left;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti-four {
+    animation-name: add-to-bag-fly-right;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti--purple {
+    z-index: -1;
+    position: absolute;
+    height: 50px;
+    width: 10px;
+    border-radius: 10px;
+    animation-fill-mode: forwards;
+    animation-duration: 0.75s;
+    animation-iteration-count: 1;
+    transform-origin: center middle;
+    opacity: 0;
+    background-color: #6200ea;
+    animation-delay: 0.5s;
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti--purple-one {
+    animation-name: add-to-bag-fly-up-left;
+    left: 20%;
+    top: 20%;
+    transform: rotate(135deg);
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti--purple-two {
+    animation-name: add-to-bag-fly-up-right;
+    left: auto;
+    right: 20%;
+    top: 20%;
+    transform: rotate(45deg);
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti--purple-three {
+    animation-name: add-to-bag-fly-down-left;
+    left: 20%;
+    top: auto;
+    bottom: 20%;
+    transform: rotate(45deg);
+  }
+  .add-to-bag-success-overlay .add-to-bag-success-confetti--purple-four {
+    animation-name: add-to-bag-fly-down-right;
+    left: auto;
+    right: 20%;
+    top: auto;
+    bottom: 20%;
+    transform: rotate(135deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .add-to-bag-success-overlay .add-to-bag-success-trophy {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* View Transitions API: product card image → modal hero image */
+::view-transition-group(*) {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Keep old image visible until the new one is fully ready (reduces flicker on mobile) */
+::view-transition-old(*) {
+  animation: none;
+  opacity: 1;
+}

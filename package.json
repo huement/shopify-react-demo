@@ -1,0 +1,46 @@
+{
+  "name": "shopify-react-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "codegen": "graphql-codegen",
+    "lint": "eslint",
+    "list-collections": "dotenv -e .env.local -- node scripts/list-collections.mjs",
+    "list-collection-items": "dotenv -e .env.local -- node scripts/list-collection-items.mjs"
+  },
+  "dependencies": {
+    "@shopify/storefront-api-client": "^1.0.9",
+    "express": "^5.2.1",
+    "framer-motion": "^12.31.0",
+    "motion": "^12.26.2",
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "swiper": "^12.1.0",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^6.1.1",
+    "@shopify/api-codegen-preset": "^1.2.1",
+    "@shopify/shopify-api": "^12.2.0",
+    "@t3-oss/env-nextjs": "^0.13.10",
+    "@tailwindcss/postcss": "^4",
+    "@types/express": "^5.0.6",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "graphql-config": "^5.1.5",
+    "server-only": "^0.0.1",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  }
+}
